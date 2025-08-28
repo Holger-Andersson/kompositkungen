@@ -12,21 +12,80 @@
 
   <div id="app"></div>
   <script type="module" src="/src/main.ts"></script>
-  <div>
+
+  <div class="container">
     <h1>KOMPOSITKUNGEN</h1>
-    <div>
-      <form>
-        <select id="dropdown">
+
+    <form id="mix-form" class="section" action="#" method="POST">
+      <div class="row">
+
+        <label for="material">Material</label>
+        <select id="material" name="material" required>
+
+          <option value="" disabled selected>Välj material..</option>
           <option value="item1">Material1</option>
           <option value="item2">Material2</option>
           <option value="item3">Material3</option>
         </select>
-        <input type="text" placeholder="Ange mängd" />
-        <button type="submit" id="submit">Submit</button>
-      </form>
-    </div>
-  </div>
 
+        <label for="project">Project nummer</label>
+        <input type="text" id="project" name="project" placeholder="Project nummer" />
+      </div>
+      <div class="row">
+        <label for="amount">Mängd</label>
+        <input type="text" id="amount" name="amount" placeholder="Ange mängd" />
+
+        <label for="celcius">Temperatur</label>
+        <input type="text" id="celcius" name="celcius" placeholder="Ange i celcius" />
+      </div>
+      <div class="row">
+        <label for="note">Kommentar</label>
+        <input type="text" name="note" placeholder="Kommentar" />
+      </div>
+      <div class="row">
+        <button type="submit" id="submit">Submit</button>
+      </div>
+    </form>
+
+    <section class="result-section">
+      <h2 id="result-heading">Resultat</h2>
+      <div class="cards">
+        <div class="card">
+          <div class="label">A-del</div>
+        </div>
+        <div class="card">
+          <div class="label">B-del</div>
+        </div>
+        <div class="card">
+          <div class="label">C-del</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="timer-section">
+      <h2 id="timer-heading">Timer</h2>
+
+      <div class="row">
+        <label for="potlife">Brinn tid (minuter)</label>
+        <input id="potlife" name="potlife" type="number" inputmode="numeric" placeholder="t.ex. 45" />
+
+        <div class="timer-display">00:00</div>
+        <div>Tid kvar: 40:00</div>
+        <div>Använd tid: 20:00</div>
+      </div>
+
+
+      <div class="progress">
+        <div class="bar" id="timer-bar" style="width: 33%"></div>
+      </div>
+
+      <div class="buttons">
+        <button id="start-timer" class="primary" type="button">Starta</button>
+        <button id="pause-timer" class="secondary" type="button">Pausa</button>
+        <button id="reset-timer" class="secondary" type="button">Nollställ</button>
+        </div>
+    </section>
+  
 </body>
 
 </html>
