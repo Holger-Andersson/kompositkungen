@@ -10,82 +10,39 @@
 
 <body>
 
+  <script type="module" src="./src/main.ts"></script>
+
+  <!-- <div id="auth">
+
+    <form method="POST" action="#" class="login-form">
+      <div class="logo-container">
+        <img src="/#" alt="Logo" class="logo">
+      </div>
+      <div class="login-container">
+        <h2>Logga in</h2>
+        <div>
+          <label for="username">Användarnamn:</label>
+          <input type="text" id="username" name="username" placeholder="Användarnamn..." required />
+        </div>
+        <div>
+          <label for="password" id="password">Lösenord:</label>
+          <input type="password" id="password" name="password" placeholder="Lösenord..." required />
+        </div>
+        <div>
+          <button type="submit" id="login-button">Logga in</button>
+        </div>
+        <label>
+          <input type="checkbox" checked="checked" name="remember"> Kom ihåg mig </label>
+      </div>
+      <div>
+        <button type="button" id="register-button">Registrera dig</button>
+      </div>
+  </div>
+  </form>
+  </div> -->
+
   <div id="app"></div>
-  <script type="module" src="/src/main.ts"></script>
 
-  <div class="container">
-    <h1>KOMPOSITKUNGEN</h1>
-
-    <form id="mix-form" class="section" action="#" method="POST">
-      <div class="row">
-
-        <label for="material">Material</label>
-        <select id="material" name="material" required>
-
-          <option value="" disabled selected>Välj material..</option>
-          <option value="item1">Material1</option>
-          <option value="item2">Material2</option>
-          <option value="item3">Material3</option>
-        </select>
-
-        <label for="project">Project nummer</label>
-        <input type="text" id="project" name="project" placeholder="Project nummer" />
-      </div>
-      <div class="row">
-        <label for="amount">Mängd</label>
-        <input type="text" id="amount" name="amount" placeholder="Ange mängd" />
-
-        <label for="celcius">Temperatur</label>
-        <input type="text" id="celcius" name="celcius" placeholder="Ange i celcius" />
-      </div>
-      <div class="row">
-        <label for="note">Kommentar</label>
-        <input type="text" name="note" placeholder="Kommentar" />
-      </div>
-      <div class="row">
-        <button type="submit" id="submit">Submit</button>
-      </div>
-    </form>
-
-    <section class="result-section">
-      <h2 id="result-heading">Resultat</h2>
-      <div class="cards">
-        <div class="card">
-          <div class="label">A-del</div>
-        </div>
-        <div class="card">
-          <div class="label">B-del</div>
-        </div>
-        <div class="card">
-          <div class="label">C-del</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="timer-section">
-      <h2 id="timer-heading">Timer</h2>
-
-      <div class="row">
-        <label for="potlife">Brinn tid (minuter)</label>
-        <input id="potlife" name="potlife" type="number" inputmode="numeric" placeholder="t.ex. 45" />
-
-        <div class="timer-display">00:00</div>
-        <div>Tid kvar: 40:00</div>
-        <div>Använd tid: 20:00</div>
-      </div>
-
-
-      <div class="progress">
-        <div class="bar" id="timer-bar" style="width: 33%"></div>
-      </div>
-
-      <div class="buttons">
-        <button id="start-timer" class="primary" type="button">Starta</button>
-        <button id="pause-timer" class="secondary" type="button">Pausa</button>
-        <button id="reset-timer" class="secondary" type="button">Nollställ</button>
-        </div>
-    </section>
-  
 </body>
 
 </html>

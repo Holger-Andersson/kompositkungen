@@ -1,3 +1,119 @@
-import './style.css'
+import '../style.css';
+import { Mats } from './domain/materials';
 
-//import { calculate } from './services/calcService';
+
+document.querySelector('#app')!.innerHTML = `
+    <div class="container">
+      <h1>KOMPOSITKUNGEN</h1>
+
+      <form id="mix-form" class="section" action="#" method="#">
+        <div class="row">
+
+          <label for="material">Material</label>
+          <select id="material" name="material" required>
+          </select>
+
+          <label for="project">Project nummer</label>
+          <input type="text" id="project" name="project" placeholder="Project nummer" />
+        </div>
+        <div class="row">
+          <label for="amount">Mängd</label>
+          <input type="text" id="amountA" name="amount" placeholder="Ange mängd" />
+
+          <label for="celcius">Temperatur</label>
+          <input type="text" id="celcius" name="celcius" placeholder="Ange i celcius" />
+        </div>
+        <div class="row">
+          <label for="note">Kommentar</label>
+          <input type="text" name="note" placeholder="Kommentar" />
+        </div>
+        <div class="row">
+          <button type="submit" id="calculate">Submit</button>
+        </div>
+      </form>
+
+      <section class="result-section">
+        <h2 id="result-heading">Resultat</h2>
+        <div class="cards">
+          <div class="card">
+            <div class="label">A-del</div>
+          </div>
+          <div class="card">
+            <div class="label">B-del</div>
+          </div>
+          <div class="card">
+            <div class="label">C-del</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="timer-section">
+        <h2 id="timer-heading">Timer</h2>
+
+        <div class="row">
+          <label for="potlife">Brinn tid (minuter)</label>
+          <input id="potlife" name="potlife" type="number" inputmode="numeric" placeholder="t.ex. 45" />
+
+          <div class="timer-display">00:00</div>
+          <div>Tid kvar: 40:00</div>
+          <div>Använd tid: 20:00</div>
+        </div>
+
+
+        <div class="progress">
+          <div class="bar" id="timer-bar" style="width: 33%"></div>
+        </div>
+
+        <div class="buttons">
+          <button id="start-timer" class="primary" type="button">Starta</button>
+          <button id="pause-timer" class="secondary" type="button">Pausa</button>
+          <button id="reset-timer" class="secondary" type="button">Nollställ</button>
+        </div>
+      </section>
+    `;
+
+
+console.log(Mats);
+
+// funktion som hämtar material från material.ts till roll-listan.
+const selectElement = document.getElementById("material") as HTMLSelectElement;
+
+selectElement.innerHTML = "";
+
+Mats.forEach(mat => {
+    const option = document.createElement("option");
+    option.textContent = mat.name;
+    selectElement.appendChild(option);
+});
+
+// hämta blandningsförhållanden från mixraties.ts
+
+//funktion som beräknar vikt av varje kompositmaterial beroende på hur mycket A-del man vill använda.
+
+//när man klickar på submit körs kalkylatorfunktionen
+//hämtar data från input från mängd i formuläret
+// beräknar hur mycket b och c del som behövs i förhållande till a.
+// visa resultat i result-section 
+
+function getSelectedMaterial() {
+    // const selectedMaterial = selectElement.value;
+    const selectedMaterial = (Mats.find(mat => mat.name === selectElement.value));
+    console.log(selectedMaterial);
+    return selectedMaterial!;
+}
+
+selectElement.addEventListener("change", () => {
+    getSelectedMaterial();
+});
+
+const submitButton = document.getElementById("calculate") as HTMLButtonElement;
+
+submitButton.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const mat = getSelectedMaterial();
+
+    const amountInput = document.getElementById("amountA") as HTMLInputElement;
+    const amountValue = Number(amountInput.value);
+    const result = (amountValue * mat.ratio.b) / amountValue;
+    console.log(result);
+});
