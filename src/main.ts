@@ -81,9 +81,9 @@ const selectElement = document.getElementById("material") as HTMLSelectElement;
 selectElement.innerHTML = "";
 
 Mats.forEach(mat => {
-    const option = document.createElement("option");
-    option.textContent = mat.name;
-    selectElement.appendChild(option);
+  const option = document.createElement("option");
+  option.textContent = mat.name;
+  selectElement.appendChild(option);
 });
 
 // hämta blandningsförhållanden från mixraties.ts
@@ -96,24 +96,43 @@ Mats.forEach(mat => {
 // visa resultat i result-section 
 
 function getSelectedMaterial() {
-    // const selectedMaterial = selectElement.value;
-    const selectedMaterial = (Mats.find(mat => mat.name === selectElement.value));
-    console.log(selectedMaterial);
-    return selectedMaterial!;
+  // const selectedMaterial = selectElement.value;
+  const selectedMaterial = (Mats.find(mat => mat.name === selectElement.value));
+  console.log(selectedMaterial);
+  return selectedMaterial!;
+
 }
 
 selectElement.addEventListener("change", () => {
-    getSelectedMaterial();
+  getSelectedMaterial();
 });
 
 const submitButton = document.getElementById("calculate") as HTMLButtonElement;
 
-submitButton.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const mat = getSelectedMaterial();
+//beräkna 2 komp eller 3 komp
 
-    const amountInput = document.getElementById("amountA") as HTMLInputElement;
-    const amountValue = Number(amountInput.value);
-    const result = (amountValue * mat.ratio.b) / amountValue;
-    console.log(result);
+// 2komp -> B-del = Amängd x (ratio: b/a)  //
+
+// 3komp likt ovan för b-del
+// C-del byts i ratio -> C-del = Amängd x (ratio:c/a)
+
+submitButton.addEventListener("click", (e) => {
+  e.preventDefault();
+  const mat = getSelectedMaterial();
+  const amountInput = document.getElementById("amountA") as HTMLInputElement;
+  const amountValue = Number(amountInput.value);
+  const resultB = Math.round(amountValue * (mat.ratio.b / mat.ratio.a));
+
+  console.log(mat.ratio.b);
+  console.log(amountValue);
+  console.log(resultB);
+
+  if (mat.ratio.c === null) {
+    return (resultB);
+  } else {
+    console.log(mat.ratio.c)
+    const resultC = Math.round(amountValue * (mat.ratio.c / mat.ratio.a));
+    console.log(resultC);
+  };
+
 });
