@@ -1,5 +1,6 @@
 import '../style.css';
 import { Mats } from './domain/materials';
+import { calculateMix } from './services/calcmix.ts'
 
 
 document.querySelector('#app')!.innerHTML = `
@@ -36,13 +37,13 @@ document.querySelector('#app')!.innerHTML = `
         <h2 id="result-heading">Resultat</h2>
         <div class="cards">
           <div class="card">
-            <div class="label">A-del</div>
+            <div class="label" id="partA">A-del</div>
           </div>
           <div class="card">
-            <div class="label">B-del</div>
+            <div class="label" id="partB">B-del</div>
           </div>
           <div class="card">
-            <div class="label">C-del</div>
+            <div class="label" id="partC">C-del</div>
           </div>
         </div>
       </section>
@@ -72,12 +73,8 @@ document.querySelector('#app')!.innerHTML = `
       </section>
     `;
 
-
-console.log(Mats);
-
 // funktion som hämtar material från material.ts till roll-listan.
-const selectElement = document.getElementById("material") as HTMLSelectElement;
-
+export const selectElement = document.getElementById("material") as HTMLSelectElement;
 selectElement.innerHTML = "";
 
 Mats.forEach(mat => {
@@ -95,20 +92,6 @@ Mats.forEach(mat => {
 // beräknar hur mycket b och c del som behövs i förhållande till a.
 // visa resultat i result-section 
 
-function getSelectedMaterial() {
-  // const selectedMaterial = selectElement.value;
-  const selectedMaterial = (Mats.find(mat => mat.name === selectElement.value));
-  console.log(selectedMaterial);
-  return selectedMaterial!;
-
-}
-
-selectElement.addEventListener("change", () => {
-  getSelectedMaterial();
-});
-
-const submitButton = document.getElementById("calculate") as HTMLButtonElement;
-
 //beräkna 2 komp eller 3 komp
 
 // 2komp -> B-del = Amängd x (ratio: b/a)  //
@@ -116,23 +99,16 @@ const submitButton = document.getElementById("calculate") as HTMLButtonElement;
 // 3komp likt ovan för b-del
 // C-del byts i ratio -> C-del = Amängd x (ratio:c/a)
 
+const submitButton = document.getElementById("calculate") as HTMLButtonElement;
 submitButton.addEventListener("click", (e) => {
   e.preventDefault();
-  const mat = getSelectedMaterial();
-  const amountInput = document.getElementById("amountA") as HTMLInputElement;
-  const amountValue = Number(amountInput.value);
-  const resultB = Math.round(amountValue * (mat.ratio.b / mat.ratio.a));
+  const results = calculateMix();
+  const partAdiv = document.getElementById("partA")!;
+  const partBdiv = document.getElementById("partB")!;
+  const partCdiv = document.getElementById("partC")!;
 
-  console.log(mat.ratio.b);
-  console.log(amountValue);
-  console.log(resultB);
-
-  if (mat.ratio.c === null) {
-    return (resultB);
-  } else {
-    console.log(mat.ratio.c)
-    const resultC = Math.round(amountValue * (mat.ratio.c / mat.ratio.a));
-    console.log(resultC);
-  };
-
+  console.log(results)
+  partAdiv.textContent = `${results.amountValue}`;
+  partBdiv.textContent = `${results.resultB}`;
+  partCdiv.textContent = `${results.resultC}`;
 });
