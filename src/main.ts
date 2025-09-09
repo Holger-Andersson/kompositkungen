@@ -19,14 +19,14 @@ document.querySelector('#app')!.innerHTML = `
         </div>
         <div class="row">
           <label for="amount">Mängd</label>
-          <input type="number" id="amountA" name="amount" placeholder="Ange mängd" />
+          <input id="amountA" name="amount" placeholder="Ange mängd" />
 
           <label for="celcius">Temperatur</label>
           <input type="number" id="celcius" name="celcius" placeholder="Ange i celcius" />
         </div>
         <div class="row">
           <label for="note">Kommentar</label>
-          <input type="text" name="note" placeholder="Kommentar" />
+          <input type="text" id="comment" name="note" placeholder="Kommentar" />
         </div>
         <div class="row">
           <button type="submit" id="calculate">Submit</button>
@@ -85,8 +85,10 @@ Mats.forEach(mat => {
 });
 
 const submitButton = document.getElementById("calculate") as HTMLButtonElement;
-submitButton.addEventListener("click", (e) => {
-  e.preventDefault();
+
+submitButton.addEventListener('click', async (event) => {
+  event.preventDefault();
+
   const results = calculateMix();
   const partAdiv = document.getElementById("partA")!;
   const partBdiv = document.getElementById("partB")!;
@@ -96,23 +98,23 @@ submitButton.addEventListener("click", (e) => {
   partAdiv.textContent = `${results.amountValue}`;
   partBdiv.textContent = `${results.resultB}`;
   partCdiv.textContent = `${results.resultC}`;
-});
 
-//----------------DATABAS TESTNING-----------------------
-
-let myInput = "";
-
-submitButton.addEventListener('click', async (event) => {
-  event.preventDefault();
-  myInput = document.getElementById("project")!.value;
-  console.log(myInput);
+  let project = {
+    projectNumber: Number((document.getElementById("project") as HTMLInputElement).value),
+    material: (document.getElementById("material") as HTMLSelectElement).value,
+    temperature: Number((document.getElementById("celcius") as HTMLInputElement).value),
+    comment: (document.getElementById("comment") as HTMLInputElement).value,
+    partA: Number((document.getElementById("amountA") as HTMLInputElement).value),
+    partB: results.resultB,
+    partC: results.resultC,
+  }
 
   const result = await fetch("http://localhost:1337/form", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ name: myInput })
+    body: JSON.stringify(project)
 
   });
   console.log(result);
@@ -130,7 +132,7 @@ submitButton.addEventListener('click', async (event) => {
 //när man klickar på submit körs kalkylatorfunktionen
 //hämtar data från input från mängd i formuläret
 // beräknar hur mycket b och c del som behövs i förhållande till a.
-// visa resultat i result-section 
+// visa resultat i result-section
 
 //beräkna 2 komp eller 3 komp
 

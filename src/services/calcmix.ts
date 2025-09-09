@@ -9,7 +9,7 @@ export function calculateMix() {
   const resultB = Math.round(amountValue * (mat.ratio.b / mat.ratio.a));
 
   if (mat.ratio.c === null) {
-    return { resultB, resultC: null };;
+    return { resultB, resultC: null };
   } else {
     const resultC = Math.round(amountValue * (mat.ratio.c / mat.ratio.a));
     return { resultB, resultC, amountValue };
