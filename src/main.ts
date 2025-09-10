@@ -23,7 +23,7 @@ document.querySelector('#app')!.innerHTML = `
           <input type="number" id="amountA" name="amount" placeholder="Ange mängd" />
 
           <label for="celcius">Temperatur</label>
-          <input type="text" id="temperature" name="celcius" placeholder="Ange i celcius" />
+          <input type="number" id="temperature" name="celcius" placeholder="Ange i celcius" />
         </div>
         <div class="row">
           <label for="note">Kommentar</label>
