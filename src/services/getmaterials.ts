@@ -1,7 +1,9 @@
 import { Mats } from '../domain/materials.ts';
-import { selectElement } from '../main.ts';
 
 export function getSelectedMaterial() {
-  const selectedMaterial = (Mats.find(mat => mat.name === selectElement.value));
-  return selectedMaterial!;
-  };
+  const selectElement = document.getElementById('material') as HTMLSelectElement;
+  if (!selectElement) {
+    throw new Error('#Material finns inte att hitta');
+  }
+  return Mats.find(mat => mat.name === selectElement.value)!;
+}
