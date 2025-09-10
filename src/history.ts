@@ -13,8 +13,8 @@ export function renderHistory() {
 
         <label for="projectHistory">Ange projektnummer</label>
 
-        <input type="number" id="projecthistory" placeholder="tex 18922"/>
-        <button type="submit" id="getProjectHistory">Hämta</button>
+        <input type="number" id="projectNumber" placeholder="tex 18922"/>
+        <button type="button" id="getProjectNumber">Hämta</button>
 
 </div>
 
@@ -40,4 +40,30 @@ export function renderHistory() {
     if (switchButton) {
         switchButton.addEventListener('click', () => renderHome());
     }
+  
+    const historyButton = document.getElementById("getProjectNumber") as HTMLButtonElement;
+    historyButton.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const projectNumberInput = document.getElementById("projectNumber") as HTMLInputElement;
+        const pn = Number(projectNumberInput.value);
+        try {
+            const data = await fetchByProjectNumber(pn);
+            if (!data) {
+                console.log("Inget projekt hittades");
+                return;
+            } 
+            console.log("Project:", data);
+        } catch (err) {
+            console.error(err);
+            console.log("Kunde inte hämta projekt");
+        }
+        
+
+    });
+
+async function fetchByProjectNumber(projectNumber: number) {
+  const res = await fetch(`http://localhost:1337/dummy/${projectNumber}`);
+  return await res.json();
+}
+
 }
