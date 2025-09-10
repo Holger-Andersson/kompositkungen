@@ -1,6 +1,7 @@
 import '../style.css';
 import { Mats } from './domain/materials';
 import { calculateMix } from './services/calcmix.ts'
+import { getPotlifeMinutes } from './services/getpotlife.ts';
 
 
 document.querySelector('#app')!.innerHTML = `
@@ -22,7 +23,7 @@ document.querySelector('#app')!.innerHTML = `
           <input type="text" id="amountA" name="amount" placeholder="Ange mängd" />
 
           <label for="celcius">Temperatur</label>
-          <input type="text" id="celcius" name="celcius" placeholder="Ange i celcius" />
+          <input type="text" id="temperature" name="celcius" placeholder="Ange i celcius" />
         </div>
         <div class="row">
           <label for="note">Kommentar</label>
@@ -99,16 +100,22 @@ Mats.forEach(mat => {
 // 3komp likt ovan för b-del
 // C-del byts i ratio -> C-del = Amängd x (ratio:c/a)
 
+
+
+
 const submitButton = document.getElementById("calculate") as HTMLButtonElement;
 submitButton.addEventListener("click", (e) => {
   e.preventDefault();
   const results = calculateMix();
+  const potlifeMinutes = getPotlifeMinutes();
+  console.log(potlifeMinutes);
+
   const partAdiv = document.getElementById("partA")!;
   const partBdiv = document.getElementById("partB")!;
   const partCdiv = document.getElementById("partC")!;
 
   console.log(results)
-  partAdiv.textContent = `${results.amountValue}`;
-  partBdiv.textContent = `${results.resultB}`;
-  partCdiv.textContent = `${results.resultC}`;
+  partAdiv.textContent = `A: ${results.resultA}`;
+  partBdiv.textContent = `B: ${results.resultB}`;
+  partCdiv.textContent = `C: ${results.resultC}`;
 });
