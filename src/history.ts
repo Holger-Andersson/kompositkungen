@@ -1,13 +1,13 @@
 import '../style.css';
-// import { renderHome } from '../src/main.ts';
+import { renderHome } from '../src/main.ts';
 
 export function renderHistory() {
-document.querySelector('#app')!.innerHTML = `
+    document.querySelector('#app')!.innerHTML = `
 <div class="container">
     <h1>KOMPOSITKUNGEN</h1>
         <h2>Historik</h2>
-        <button id="switchBack" type="submit">Tillbaka</button>
-        <form id="displayProject" class="section" action="#" method="#"
+        <button id="switchBack" type="button">Tillbaka</button>
+        <form id="displayProject" class="section" action="#" method="#">
     
         <div class="row">
 
@@ -34,9 +34,10 @@ document.querySelector('#app')!.innerHTML = `
 </div>
 
 `;
-};
 
-// const switchButton = document.getElementById("switchBack") as HTMLButtonElement;
-// switchButton.addEventListener('click', () => {
-//   renderHome();
-// });
+
+    const switchButton = document.getElementById("switchBack") as HTMLButtonElement;
+    if (switchButton) {
+        switchButton.addEventListener('click', () => renderHome());
+    }
+}
