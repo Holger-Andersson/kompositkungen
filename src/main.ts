@@ -1,12 +1,14 @@
 import '../style.css';
 import { Mats } from './domain/materials';
 import { calculateMix } from './services/calcmix.ts'
+import { renderHistory } from '../src/history.ts'
 
-
-document.querySelector('#app')!.innerHTML = `
+export function renderHome() {
+  document.querySelector('#app')!.innerHTML = `
     <div class="container">
       <h1>KOMPOSITKUNGEN</h1>
 
+      <button id="switch" type="button">Historik</button>
       <form id="mix-form" class="section" action="#" method="#">
         <div class="row">
 
@@ -74,8 +76,16 @@ document.querySelector('#app')!.innerHTML = `
       </div>
     `;
 
+  // Button som kör renderpage för att visa historiksida.
+
+  const switchButton = document.getElementById("switch") as HTMLButtonElement;
+  switchButton.addEventListener('click', () => {
+    renderHistory();
+  });
+
+
 // funktion som hämtar material från material.ts till roll-listan.
-export const selectElement = document.getElementById("material") as HTMLSelectElement;
+const selectElement = document.getElementById("material") as HTMLSelectElement;
 selectElement.innerHTML = "";
 
 Mats.forEach(mat => {
@@ -85,7 +95,6 @@ Mats.forEach(mat => {
 });
 
 const submitButton = document.getElementById("calculate") as HTMLButtonElement;
-
 submitButton.addEventListener('click', async (event) => {
   event.preventDefault();
 
@@ -119,10 +128,9 @@ submitButton.addEventListener('click', async (event) => {
   });
   console.log(result);
 });
+};
 
-
-
-
+renderHome();
 //-----------------------------------------------
 
 // hämta blandningsförhållanden från mixraties.ts
