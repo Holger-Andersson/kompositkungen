@@ -112,7 +112,7 @@ submitButton.addEventListener('click', async (event) => {
   let project = {
     projectNumber: Number((document.getElementById("project") as HTMLInputElement).value),
     material: (document.getElementById("material") as HTMLSelectElement).value,
-    temperature: Number((document.getElementById("celcius") as HTMLInputElement).value),
+    temperature: Number((document.getElementById("temperature") as HTMLInputElement).value),
     comment: (document.getElementById("comment") as HTMLInputElement).value,
     partA: Number((document.getElementById("amountA") as HTMLInputElement).value),
     partB: results.resultB,
@@ -150,12 +150,6 @@ renderHome();
 // 3komp likt ovan för b-del
 // C-del byts i ratio -> C-del = Amängd x (ratio:c/a)
 
-
-
-
-const submitButton = document.getElementById("calculate") as HTMLButtonElement;
-submitButton.addEventListener("click", (e) => {
-  e.preventDefault();
   const results = calculateMix();
   const partAdiv = document.getElementById("partA")!;
   const partBdiv = document.getElementById("partB")!;
@@ -165,4 +159,3 @@ submitButton.addEventListener("click", (e) => {
   partAdiv.textContent = `${results.resultA}`;
   partBdiv.textContent = `${results.resultB}`;
   partCdiv.textContent = `${results.resultC}`;
-});
