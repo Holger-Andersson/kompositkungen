@@ -1,8 +1,10 @@
 import '../style.css';
 import { Mats } from './domain/materials';
-import { calculateMix } from './services/calcmix.ts'
-import { renderHistory } from '../src/history.ts'
+// import { calculateMix } from './services/calcmix.ts'
+// import { renderHistory } from '../src/history.ts'
+import { getInputCalc } from './services/calcmix.ts'
 // import { getPotlifeMinutes } from './services/getpotlife.ts';
+
 
 export function renderHome() {
   document.querySelector('#app')!.innerHTML = `
@@ -21,9 +23,16 @@ export function renderHome() {
           <input type="text" id="project" name="project" placeholder="Project nummer" />
         </div>
         <div class="row">
-          <label for="amount">Mängd</label>
-          <input id="amountA" name="amount" placeholder="Ange mängd" />
+          <label for="amountA">A-del</label>
+          <input id="amountA" name="amountA" type="number" placeholder="A" />
 
+          <label for="amountB">B-del</label>
+          <input id="amountB" name="amountB" type="number" placeholder="B" />
+
+          <label for="amountC">C-del</label>
+          <input id="amountC" name="amountC" type="number" placeholder="C" />
+          </div>
+        <div class="row">
           <label for="celcius">Temperatur</label>
           <input type="number" id="temperature" name="celcius" placeholder="Ange i celcius" />
         </div>
@@ -77,61 +86,58 @@ export function renderHome() {
       </div>
     `;
 
+  
+
   // Button som kör renderpage för att visa historiksida.
+  // const switchButton = document.getElementById("switch") as HTMLButtonElement;
+  // switchButton.addEventListener('click', () => {
+  //   renderHistory();
+  // });
 
-  const switchButton = document.getElementById("switch") as HTMLButtonElement;
-  switchButton.addEventListener('click', () => {
-    renderHistory();
+
+  // funktion som hämtar material från material.ts till roll-listan.
+  const selectElement = document.getElementById("material") as HTMLSelectElement;
+  selectElement.innerHTML = "";
+
+  Mats.forEach(mat => {
+    const option = document.createElement("option");
+    option.textContent = mat.name;
+    selectElement.appendChild(option);
   });
+  getInputCalc();
+  // const submitButton = document.getElementById("calculate") as HTMLButtonElement;
+  // submitButton.addEventListener('click', async (event) => {
+  //   event.preventDefault();
 
+  //   const results = calculateMix();
+  //   const partAdiv = document.getElementById("partA")!;
+  //   const partBdiv = document.getElementById("partB")!;
+  //   const partCdiv = document.getElementById("partC")!;
 
-// funktion som hämtar material från material.ts till roll-listan.
-const selectElement = document.getElementById("material") as HTMLSelectElement;
-selectElement.innerHTML = "";
+  //   let project = {
+  //     projectNumber: Number((document.getElementById("project") as HTMLInputElement).value),
+  //     material: (document.getElementById("material") as HTMLSelectElement).value,
+  //     temperature: Number((document.getElementById("temperature") as HTMLInputElement).value),
+  //     comment: (document.getElementById("comment") as HTMLInputElement).value,
+  //     partA: Number((document.getElementById("amountA") as HTMLInputElement).value),
+  //     partB: results.resultB,
+  //     partC: results.resultC,
+  //   }
 
-Mats.forEach(mat => {
-  const option = document.createElement("option");
-  option.textContent = mat.name;
-  selectElement.appendChild(option);
-});
+//     const result = await fetch("http://localhost:1337/form", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json"
+//       },
+//       body: JSON.stringify(project)
 
-const submitButton = document.getElementById("calculate") as HTMLButtonElement;
-submitButton.addEventListener('click', async (event) => {
-  event.preventDefault();
-
-  const results = calculateMix();
-  const partAdiv = document.getElementById("partA")!;
-  const partBdiv = document.getElementById("partB")!;
-  const partCdiv = document.getElementById("partC")!;
-
-  console.log(results)
-  partAdiv.textContent = `${results.resultA}`;
-  partBdiv.textContent = `${results.resultB}`;
-  partCdiv.textContent = `${results.resultC}`;
-
-  let project = {
-    projectNumber: Number((document.getElementById("project") as HTMLInputElement).value),
-    material: (document.getElementById("material") as HTMLSelectElement).value,
-    temperature: Number((document.getElementById("temperature") as HTMLInputElement).value),
-    comment: (document.getElementById("comment") as HTMLInputElement).value,
-    partA: Number((document.getElementById("amountA") as HTMLInputElement).value),
-    partB: results.resultB,
-    partC: results.resultC,
-  }
-
-  const result = await fetch("http://localhost:1337/form", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(project)
-
-  });
-  console.log(result);
-});
+//     });
+//     console.log(result);
+//   });
 };
 
 renderHome();
+
 //-----------------------------------------------
 
 // hämta blandningsförhållanden från mixraties.ts
@@ -149,13 +155,4 @@ renderHome();
 
 // 3komp likt ovan för b-del
 // C-del byts i ratio -> C-del = Amängd x (ratio:c/a)
-
-  const results = calculateMix();
-  const partAdiv = document.getElementById("partA")!;
-  const partBdiv = document.getElementById("partB")!;
-  const partCdiv = document.getElementById("partC")!;
-
-  console.log(results)
-  partAdiv.textContent = `${results.resultA}`;
-  partBdiv.textContent = `${results.resultB}`;
-  partCdiv.textContent = `${results.resultC}`;
+//
