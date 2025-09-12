@@ -41,25 +41,25 @@ export function renderHistory() {
         switchButton.addEventListener('click', () => renderHome());
     }
 
-        const historyButton = document.getElementById("getProjectNumber") as HTMLButtonElement;
-        historyButton.addEventListener('click', async (e) => {
-            e.preventDefault();
-            
-            const pn = (document.getElementById("projectNumber") as HTMLInputElement).value;
-            const displayData = document.getElementById("output")!;
-            try {
-                const res = await fetch(`http://localhost:1337/dummy/${pn}`);
-                const data = await res.json();
+    const historyButton = document.getElementById("getProjectNumber") as HTMLButtonElement;
+    historyButton.addEventListener('click', async (e) => {
+        e.preventDefault();
 
-                let list = "<ul>";
-                for (const [key, value] of Object.entries(data)) {
-                    list += `<li><strong>${key}:</strong>${value}</li>`;
-                }
-                list += `</ul>`
-                displayData.innerHTML = list; 
-            } catch (err: any) {
-                displayData.textContent = `ERR0Rr`;
-            };
-        
-        });
-    }
+        const pn = (document.getElementById("projectNumber") as HTMLInputElement).value;
+        const displayData = document.getElementById("output")!;
+        try {
+            const res = await fetch(`http://localhost:1337/dummy/${pn}`);
+            const data = await res.json();
+
+            let list = "<ul>";
+            for (const [key, value] of Object.entries(data)) {
+                list += `<li><strong>${key}:</strong>${value}</li>`;
+            }
+            list += `</ul>`
+            displayData.innerHTML = list;
+        } catch (err: any) {
+            displayData.textContent = `ERR0Rr`;
+        };
+
+    });
+}

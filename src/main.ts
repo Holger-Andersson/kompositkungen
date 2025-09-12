@@ -45,21 +45,6 @@ export function renderHome() {
         </div>
       </form>
 
-      <section class="result-section">
-        <h2 id="result-heading">Resultat</h2>
-        <div class="cards">
-          <div class="card">
-            <div class="label" id="partA">A-del</div>
-          </div>
-          <div class="card">
-            <div class="label" id="partB">B-del</div>
-          </div>
-          <div class="card">
-            <div class="label" id="partC">C-del</div>
-          </div>
-        </div>
-      </section>
-
       <section class="timer-section">
         <h2 id="timer-heading">Timer</h2>
 
@@ -86,7 +71,7 @@ export function renderHome() {
       </div>
     `;
 
-  
+
 
   // Button som kör renderpage för att visa historiksida.
   // const switchButton = document.getElementById("switch") as HTMLButtonElement;
@@ -105,6 +90,7 @@ export function renderHome() {
     selectElement.appendChild(option);
   });
   getInputCalc();
+
   // const submitButton = document.getElementById("calculate") as HTMLButtonElement;
   // submitButton.addEventListener('click', async (event) => {
   //   event.preventDefault();
@@ -124,16 +110,16 @@ export function renderHome() {
   //     partC: results.resultC,
   //   }
 
-//     const result = await fetch("http://localhost:1337/form", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json"
-//       },
-//       body: JSON.stringify(project)
+  //     const result = await fetch("http://localhost:1337/form", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json"
+  //       },
+  //       body: JSON.stringify(project)
 
-//     });
-//     console.log(result);
-//   });
+  //     });
+  //     console.log(result);
+  //   });
 };
 
 renderHome();

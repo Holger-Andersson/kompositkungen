@@ -17,10 +17,6 @@ app.get('/', (req, res) => {
   res.send("Hello World!");
 });
 
-
-
-
-
 app.post('/form', async (req, res) => {
   try {
     const data = req.body;
@@ -31,8 +27,6 @@ app.post('/form', async (req, res) => {
     return res.status(500);
   }
 });
-
-
 
 app.get('/dummy/:projectNumber', async (req, res) => {
   try {
