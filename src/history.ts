@@ -5,7 +5,6 @@ export function renderHistory() {
     document.querySelector('#app')!.innerHTML = `
 <div class="container">
     <h1>KOMPOSITKUNGEN</h1>
-        <h2>Historik</h2>
         <button id="switchBack" type="button">Tillbaka</button>
         <form id="displayProject" class="section" action="#" method="#">
     

@@ -1,8 +1,9 @@
 import '../style.css';
 import { Mats } from './domain/materials';
 // import { calculateMix } from './services/calcmix.ts'
-// import { renderHistory } from '../src/history.ts'
+import { renderHistory } from '../src/history.ts'
 import { getInputCalc } from './services/calcmix.ts'
+import { saveData } from './services/savemix.ts'
 // import { getPotlifeMinutes } from './services/getpotlife.ts';
 
 
@@ -33,12 +34,12 @@ export function renderHome() {
           <input id="amountC" name="amountC" type="number" placeholder="C" />
           </div>
         <div class="row">
-          <label for="celcius">Temperatur</label>
-          <input type="number" id="temperature" name="celcius" placeholder="Ange i celcius" />
+          <label for="temperature">Temperatur</label>
+          <input type="number" id="temperature" name="temperature" placeholder="Ange i celcius" />
         </div>
         <div class="row">
-          <label for="note">Kommentar</label>
-          <input type="text" id="comment" name="note" placeholder="Kommentar" />
+          <label for="comment">Kommentar</label>
+          <input type="text" id="comment" name="comment" placeholder="Kommentar" />
         </div>
         <div class="row">
           <button type="submit" id="calculate">Submit</button>
@@ -74,10 +75,10 @@ export function renderHome() {
 
 
   // Button som kör renderpage för att visa historiksida.
-  // const switchButton = document.getElementById("switch") as HTMLButtonElement;
-  // switchButton.addEventListener('click', () => {
-  //   renderHistory();
-  // });
+  const switchButton = document.getElementById("switch") as HTMLButtonElement;
+  switchButton.addEventListener('click', () => {
+    renderHistory();
+  });
 
 
   // funktion som hämtar material från material.ts till roll-listan.
@@ -91,38 +92,16 @@ export function renderHome() {
   });
   getInputCalc();
 
-  // const submitButton = document.getElementById("calculate") as HTMLButtonElement;
-  // submitButton.addEventListener('click', async (event) => {
-  //   event.preventDefault();
-
-  //   const results = calculateMix();
-  //   const partAdiv = document.getElementById("partA")!;
-  //   const partBdiv = document.getElementById("partB")!;
-  //   const partCdiv = document.getElementById("partC")!;
-
-  //   let project = {
-  //     projectNumber: Number((document.getElementById("project") as HTMLInputElement).value),
-  //     material: (document.getElementById("material") as HTMLSelectElement).value,
-  //     temperature: Number((document.getElementById("temperature") as HTMLInputElement).value),
-  //     comment: (document.getElementById("comment") as HTMLInputElement).value,
-  //     partA: Number((document.getElementById("amountA") as HTMLInputElement).value),
-  //     partB: results.resultB,
-  //     partC: results.resultC,
-  //   }
-
-  //     const result = await fetch("http://localhost:1337/form", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json"
-  //       },
-  //       body: JSON.stringify(project)
-
-  //     });
-  //     console.log(result);
-  //   });
-};
-
-renderHome();
+  //Kör  saveData för att spara till databas.
+  const submitButton = document.getElementById("calculate") as HTMLButtonElement;
+  submitButton.addEventListener('click', async (event) => {
+    event.preventDefault();
+    saveData();
+    console.log("hej")
+  });
+}
+  renderHome();
+  console.log("allo")
 
 //-----------------------------------------------
 
