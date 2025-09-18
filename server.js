@@ -4,7 +4,6 @@ import { MongoClient } from "mongodb";
 import { fileURLToPath } from "url";
 import path from "path";
 
-
 const url = "mongodb://127.0.0.1:27017"
 const client = new MongoClient(url);
 await client.connect();
@@ -15,12 +14,12 @@ const isProduction = process.env.NODE_ENV === "production";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
 const app = express();
 const port = 3000;
 app.use(express.json());
 app.use(cors());
 
+// Tar emot data och skickar den till databas.
 app.post('/form', async (req, res) => {
   try {
     const data = req.body;
@@ -32,6 +31,7 @@ app.post('/form', async (req, res) => {
   }
 });
 
+// Hämtar data från databas vid förfrågan till historik. 
 app.get('/dummy/:projectNumber', async (req, res) => {
   try {
     const num = Number(req.params.projectNumber);
@@ -48,7 +48,8 @@ app.get('/dummy/:projectNumber', async (req, res) => {
   }
 
 });
-
+// Logik för att köra vite och express på samma port
+// Mer logik för att avgöra om det ska köras som prod eller dev server.
 let vite
 if (!isProduction) {
   const rootHtml = path.join(__dirname, "index.html")

@@ -1,11 +1,9 @@
 import '../style.css';
 import { Mats } from './domain/materials';
-// import { calculateMix } from './services/calcmix.ts'
 import { renderHistory } from '../src/history.ts'
 import { getInputCalc } from './services/calcmix.ts'
 import { saveData } from './services/savemix.ts'
-// import { getPotlifeMinutes } from './services/getpotlife.ts';
-
+// import { getPotlifeMinutes } from './services/getpotlife.ts'
 
 export function renderHome() {
   document.querySelector('#app')!.innerHTML = `
@@ -72,14 +70,11 @@ export function renderHome() {
       </div>
     `;
 
-
-
   // Button som kör renderpage för att visa historiksida.
   const switchButton = document.getElementById("switch") as HTMLButtonElement;
   switchButton.addEventListener('click', () => {
     renderHistory();
   });
-
 
   // funktion som hämtar material från material.ts till roll-listan.
   const selectElement = document.getElementById("material") as HTMLSelectElement;

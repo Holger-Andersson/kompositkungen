@@ -1,5 +1,3 @@
-
-    
     export async function saveData() {
 
         let project = {
@@ -13,7 +11,6 @@
         }
         console.log(project);
         console.log("då");
-
 
     const result = await fetch("http://localhost:1337/form", {
       method: "POST",
