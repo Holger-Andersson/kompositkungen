@@ -29,6 +29,12 @@ test-results/
 blob-report/
 trace.zip
 
+#testing
+src/sum.js
+src/sum.test.js
+tests-examples/
+tests/
+
 # Local Netlify folder
 .netlify
 
