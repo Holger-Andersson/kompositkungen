@@ -1,5 +1,6 @@
 import '../style.css';
 import { renderHome } from '../src/main.ts';
+import { getData } from '../src/services/gethistory.ts';
 
 export function renderHistory() {
     document.querySelector('#app')!.innerHTML = `
@@ -12,20 +13,12 @@ export function renderHistory() {
 
         <label for="projectHistory">Ange projektnummer</label>
 
-        <input type="number" id="projecthistory" placeholder="tex 18922"/>
+        <input type="number" id="projectHistory" placeholder="tex 18922"/>
         <button type="submit" id="getProjectHistory">Hämta</button>
 </div>
 
 <section class="history-section">
-    <div class="projectCard" id="projectData"></div>
-
-    <div class="label" id="displayProjectnumber></divrrr>
-
-    <div class="label" id=""display></div>
-
-    <div class="label"></div>
-
-    <div class="label"></div>
+<div id="output"></div>
 
 </section>
 
@@ -37,4 +30,10 @@ export function renderHistory() {
     if (switchButton) {
         switchButton.addEventListener('click', () => renderHome());
     }
+
+    const historyButton = document.getElementById("getProjectHistory") as HTMLButtonElement;
+    historyButton.addEventListener('click', async (event) => {
+        event.preventDefault();
+        getData();
+    });
 }
