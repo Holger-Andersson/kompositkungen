@@ -16,7 +16,11 @@ export function getInputCalc() {
     const ratioB = mat?.ratio?.b;
     const ratioC = mat?.ratio?.c;
 
-    if (!ratioA || a.value === "") { b.value = ""; c.value = ""; return; }
+    if (!ratioA || a.value === "") {
+      b.value = "";
+      c.value = "";
+      return;
+    }
 
     const A = Number(a.value);
     const k = A / ratioA;
@@ -24,21 +28,28 @@ export function getInputCalc() {
     c.value = ratioC == null ? "" : String(Math.round(k * ratioC));
 
   }
-  function fromB() {
+  function calcWithB() {
     const mat = getSelectedMaterial();
     const ratioA = mat?.ratio?.a;
+    const ratioB = mat?.ratio?.a;
     const ratioC = mat?.ratio?.c;
-    if (!ratioA || b.value === "") { a.value = ""; c.value = ""; return; }
+
+    if (!ratioB || b.value === "") {
+      a.value = "";
+      c.value = "";
+      return;
+    }
 
     const B = Number(b.value);
-    a.value = String(Math.round(B * ratioA));
-    c.value = ratioC == null ? "" : String(Math.round(B * ratioC));
+    const k = B / ratioB;
+    a.value = String(Math.round(k * ratioA));
+    c.value = ratioC == null ? "" : String(Math.round(k * ratioC));
   }
 
   a.addEventListener("input", calcWithA);
-  b.addEventListener("input", fromB);
+  b.addEventListener("input", calcWithB);
   selectMat.addEventListener("change", () => {
     if (a.value !== "") calcWithA();
-    else if (b.value !== "") fromB();
+    else if (b.value !== "") calcWithB();
   });
 };
