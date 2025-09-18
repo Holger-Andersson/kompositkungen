@@ -92,7 +92,7 @@ export function renderHome() {
   });
   getInputCalc();
 
-  //Kör  saveData för att spara till databas.
+  // funktion som tar befintlig input och sparar det till databas.
   const submitButton = document.getElementById("calculate") as HTMLButtonElement;
   submitButton.addEventListener('click', async (event) => {
     event.preventDefault();
@@ -102,22 +102,3 @@ export function renderHome() {
 }
   renderHome();
   console.log("allo")
-
-//-----------------------------------------------
-
-// hämta blandningsförhållanden från mixraties.ts
-
-//funktion som beräknar vikt av varje kompositmaterial beroende på hur mycket A-del man vill använda.
-
-//när man klickar på submit körs kalkylatorfunktionen
-//hämtar data från input från mängd i formuläret
-// beräknar hur mycket b och c del som behövs i förhållande till a.
-// visa resultat i result-section
-
-//beräkna 2 komp eller 3 komp
-
-// 2komp -> B-del = Amängd x (ratio: b/a)  //
-
-// 3komp likt ovan för b-del
-// C-del byts i ratio -> C-del = Amängd x (ratio:c/a)
-//

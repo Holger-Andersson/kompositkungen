@@ -32,7 +32,7 @@ export function renderHistory() {
 </div>
 
 `;
-
+ // knapp för att renderera tillbaka till index sidan.
     const switchButton = document.getElementById("switchBack") as HTMLButtonElement;
     if (switchButton) {
         switchButton.addEventListener('click', () => renderHome());
