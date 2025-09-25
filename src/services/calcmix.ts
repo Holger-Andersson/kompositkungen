@@ -16,16 +16,16 @@ export function getInputCalc() {
     const ratioB = mat?.ratio?.b;
     const ratioC = mat?.ratio?.c;
 
-    if (!ratioA || a.value === "") {
-      b.value = "";
-      c.value = "";
+    if (!ratioA || a!.value === "") {
+      b!.value = "";
+      c!.value = "";
       return;
     }
 
-    const A = Number(a.value);
+    const A = Number(a!.value);
     const k = A / ratioA;
-    b.value = String(Math.round(k * ratioB));
-    c.value = ratioC == null ? "" : String(Math.round(k * ratioC));
+    b!.value = String(Math.round(k * ratioB));
+    c!.value = ratioC == null ? "" : String(Math.round(k * ratioC));
 
   }
   function calcWithB() {
@@ -34,16 +34,16 @@ export function getInputCalc() {
     const ratioB = mat?.ratio?.b;
     const ratioC = mat?.ratio?.c;
 
-    if (!ratioB || b.value === "") {
-      a.value = "";
-      c.value = "";
+    if (!ratioB || b!.value === "") {
+      a!.value = "";
+      c!.value = "";
       return;
     }
 
-    const B = Number(b.value);
+    const B = Number(b!.value);
     const k = B / ratioB;
-    a.value = String(Math.round(k * ratioA));
-    c.value = ratioC == null ? "" : String(Math.round(k * ratioC));
+    a!.value = String(Math.round(k * ratioA));
+    c!.value = ratioC == null ? "" : String(Math.round(k * ratioC));
   }
 
   a.addEventListener("input", calcWithA);
