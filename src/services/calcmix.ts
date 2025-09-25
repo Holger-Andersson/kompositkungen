@@ -31,7 +31,7 @@ export function getInputCalc() {
   function calcWithB() {
     const mat = getSelectedMaterial();
     const ratioA = mat?.ratio?.a;
-    const ratioB = mat?.ratio?.a;
+    const ratioB = mat?.ratio?.b;
     const ratioC = mat?.ratio?.c;
 
     if (!ratioB || b.value === "") {
