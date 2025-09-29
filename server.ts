@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from 'cors';
 import { MongoClient } from "mongodb";
 import { fileURLToPath } from "url";
@@ -15,12 +15,19 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors());
 
+app.use(express.static("public"));
+
+app.get("/", (req: Request, res: Response) => {
+    res.json({ message: "Welcome to the Express + TypeScript Server!" });
+});
+
+
 // Tar emot data och skickar den till databas.
-app.post('/form', async (req, res) => {
+app.post('/form', async (req: Request, res: Response) => {
   try {
     const data = req.body;
     console.log("fest", data);
@@ -32,7 +39,7 @@ app.post('/form', async (req, res) => {
 });
 
 // Hämtar data från databas vid förfrågan till historik. 
-app.get('/dummy/:projectNumber', async (req, res) => {
+app.get('/dummy/:projectNumber', async (req: Request, res: Response) => {
   try {
     const num = Number(req.params.projectNumber);
     if (!Number.isFinite(num)) {

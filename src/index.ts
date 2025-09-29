@@ -1,6 +1,5 @@
-import '../style.css';
-import { Mats } from './domain/materials';
-import { renderHistory } from '../src/history.ts'
+import { Mats } from './domain/materials.ts';
+import { renderHistory } from './history.ts'
 import { getInputCalc } from './services/calcmix.ts'
 import { saveData } from './services/savemix.ts'
 // import { getPotlifeMinutes } from './services/getpotlife.ts'

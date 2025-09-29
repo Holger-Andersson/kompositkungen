@@ -7,10 +7,14 @@
     "dev": "node server.js",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "prod": "NODE_ENV=production node server.js"
+    "prod": "NODE_ENV=production node server.js",
+    "start": "npx tsx --env-file=.env --watch src/index.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.5.2",
     "typescript": "~5.8.3",
     "vite": "^7.1.3"
   },
