@@ -14,13 +14,28 @@ test("can calculate mix", async ({page}) => {
 
     await page.getByPlaceholder("Project nummer").fill('888');
 
-    await page.getByPlaceholder("A").fill('100');
+    await page.getByRole("spinbutton", {name: 'A-del'}).fill('100');
 
     await expect(page.getByPlaceholder("B")).toHaveValue('25');
 
-    await expect(page.getByPlaceholder("C")).toHaveValue('');
+    await expect(page.getByRole('spinbutton', { name: 'C-del' })).toHaveValue('');
 
     await page.getByRole('button', {name: 'Submit'}).click();
+
+})
+
+test("can calculate mix 3part", async ({page}) => {
+    await page.goto('http://localhost:3000');
+
+    await page.getByRole("combobox", {name: 'Material' }).selectOption('MX1')
+
+    await page.getByPlaceholder("Project nummer").fill('888');
+
+    await page.getByRole("spinbutton", {name: 'B-del'}).fill('100');
+
+    await expect(page.getByRole("spinbutton", {name: 'A-del'})).toHaveValue('330');
+
+    await expect(page.getByRole('spinbutton', { name: 'C-del' })).toHaveValue('2260');
 
 })
 
