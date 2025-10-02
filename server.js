@@ -4,8 +4,8 @@ import { MongoClient } from "mongodb";
 import { fileURLToPath } from "url";
 import path from "path";
 
-const url = "mongodb://127.0.0.1:27017"
-const client = new MongoClient(url);
+const uri = "mongodb://127.0.0.1:27017"
+const client = new MongoClient(uri);
 await client.connect();
 const db = client.db("test");
 const dummy = db.collection("dummy");
