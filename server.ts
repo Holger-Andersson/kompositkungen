@@ -5,14 +5,9 @@ import { MongoClient } from "mongodb";
 import { fileURLToPath } from "url";
 import path from "path";
 
-<<<<<<< HEAD:server.js
-const uri = "mongodb://127.0.0.1:27017"
-const client = new MongoClient(uri);
-=======
 // Ansluter till mongodb
 const url = "mongodb://127.0.0.1:27017"
 const client = new MongoClient(url);
->>>>>>> feat/servertoTS:server.ts
 await client.connect();
 const db = client.db("test");
 const dummy = db.collection("dummy");
