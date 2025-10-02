@@ -1,26 +1,34 @@
 import express from "express";
+import type { Request, Response } from "express";
 import cors from 'cors';
 import { MongoClient } from "mongodb";
 import { fileURLToPath } from "url";
 import path from "path";
 
+<<<<<<< HEAD:server.js
 const uri = "mongodb://127.0.0.1:27017"
 const client = new MongoClient(uri);
+=======
+// Ansluter till mongodb
+const url = "mongodb://127.0.0.1:27017"
+const client = new MongoClient(url);
+>>>>>>> feat/servertoTS:server.ts
 await client.connect();
 const db = client.db("test");
 const dummy = db.collection("dummy");
 
+// variabler till att definera om vi kör prod eller dev server.
 const isProduction = process.env.NODE_ENV === "production";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors());
 
 // Tar emot data och skickar den till databas.
-app.post('/form', async (req, res) => {
+app.post('/api/form', async (req: Request, res: Response) => {
   try {
     const data = req.body;
     console.log("fest", data);
@@ -32,7 +40,7 @@ app.post('/form', async (req, res) => {
 });
 
 // Hämtar data från databas vid förfrågan till historik. 
-app.get('/dummy/:projectNumber', async (req, res) => {
+app.get('/api/dummy/:projectNumber', async (req: Request, res: Response) => {
   try {
     const num = Number(req.params.projectNumber);
     if (!Number.isFinite(num)) {
@@ -48,26 +56,26 @@ app.get('/dummy/:projectNumber', async (req, res) => {
   }
 
 });
+
 // Logik för att köra vite och express på samma port
 // Mer logik för att avgöra om det ska köras som prod eller dev server.
-let vite
 if (!isProduction) {
-  const rootHtml = path.join(__dirname, "index.html")
-  const {createServer: createViteServer} = await import ("vite")
-  vite = await createViteServer ({
-    server: {middlewareMode: "html"},
+  const { createServer: createViteServer } = await import("vite")
+  const vite = await createViteServer({
+    server: { middlewareMode: true },
     appType: "spa",
-    rootHtml
-  })
+  });
+
   app.use(vite.middlewares)
+
 } else {
-  const distPath = path.join(__dirname, "dist")
+  const distPath = path.resolve(__dirname, "../dist")
   app.use(express.static(distPath))
-  app.get("/*splat", (req, res) => {
+  app.get("/*splat", (_req: Request, res: Response) => {
     res.sendFile(path.join(distPath, "index.html"))
   })
 }
 
 app.listen(port, () => {
-       console.log(`running ${isProduction ? "PROD" : "DEV"} server at http://localhost:${port}`)
-   })
+  console.log(`running ${isProduction ? "PROD" : "DEV"} server at http://localhost:${port}`)
+})

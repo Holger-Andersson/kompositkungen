@@ -1,5 +1,4 @@
-import '../style.css';
-import { renderHome } from '../src/main.ts';
+import { renderHome } from './index.ts';
 import { getData } from '../src/services/gethistory.ts';
 
 export function renderHistory() {
