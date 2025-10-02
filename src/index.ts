@@ -1,3 +1,4 @@
+import "./style.css"; 
 import { Mats } from './domain/materials.ts';
 import { renderHistory } from './history.ts'
 import { getInputCalc } from './services/calcmix.ts'
