@@ -36,7 +36,6 @@ jobs:
     # - run: npx playwright test
 
     e2e:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [20.x]
