@@ -35,13 +35,15 @@ jobs:
     # - run: npx playwright install --with-deps
     # - run: npx playwright test
 
-    e2e:
+  e2e:
+    needs: unit
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [20.x]
         mongodb-version: [7.0]
 
-steps:
+    steps:
     - name: Git checkout
       uses: actions/checkout@v4
 
