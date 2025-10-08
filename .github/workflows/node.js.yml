@@ -36,7 +36,6 @@ jobs:
     # - run: npx playwright test
 
   e2e:
-    needs: unit
     runs-on: ubuntu-latest
     strategy:
       matrix:
