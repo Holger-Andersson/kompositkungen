@@ -8,6 +8,7 @@
     "build": "tsc -p tsconfig.server.json && vite build",
     "start": "cross-env NODE_ENV=production node build/server.js",
     "start:test": "cross-env NODE_ENV=test tsx server.ts",
+    "test:e2e": "playwright test",
     "test": "vitest run --reporter=dot && playwright test"
   },
   "devDependencies": {

@@ -6,14 +6,16 @@ import { fileURLToPath } from "url";
 import path from "path";
 
 // Ansluter till mongodb
-const url = "mongodb://127.0.0.1:27017"
-const client = new MongoClient(url);
+const uri = "mongodb://127.0.0.1:27017"
+const client = new MongoClient(uri);
 await client.connect();
 const db = client.db("test");
 const dummy = db.collection("dummy");
 
 // variabler till att definera om vi kör prod eller dev server.
 const isProduction = process.env.NODE_ENV === "production";
+const isTest = process.env.NODE_ENV === "test";
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
