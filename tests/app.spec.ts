@@ -12,7 +12,7 @@ test("can calculate mix", async ({page}) => {
 
     await page.getByRole("combobox", {name: 'Material' }).selectOption('858')
 
-    await page.getByPlaceholder("Project nummer").fill('888');
+    await page.getByPlaceholder("Project nummer").fill('1231');
 
     await page.getByRole("spinbutton", {name: 'A-del'}).fill('100');
 
