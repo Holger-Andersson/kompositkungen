@@ -8,8 +8,10 @@
     "build": "tsc -p tsconfig.server.json && vite build",
     "start": "cross-env NODE_ENV=production node build/server.js",
     "start:test": "cross-env NODE_ENV=test tsx server.ts",
+    "start:mem": "cross-env NODE_ENV=test tsx server.ts",
     "test:e2e": "playwright test",
-    "test": "vitest run --reporter=dot && playwright test"
+    "test:mem": "cross-env NODE_ENV=test vitest run && playwright test",
+    "test": "vitest run && playwright test"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",
@@ -27,6 +29,7 @@
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "mongodb": "^6.20.0",
+    "mongodb-memory-server": "^10.2.3",
     "netlify": "^23.4.1",
     "playwright": "^1.55.0"
   }
