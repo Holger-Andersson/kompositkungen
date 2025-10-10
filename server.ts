@@ -14,7 +14,6 @@ const dummy = db.collection("dummy");
 
 // variabler till att definera om vi kör prod eller dev server.
 const isProduction = process.env.NODE_ENV === "production";
-const isTest = process.env.NODE_ENV === "test";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -27,12 +26,11 @@ app.use(cors());
 // Tar emot data och skickar den till databas.
 app.post('/api/form', async (req: Request, res: Response) => {
   try {
-    const data = req.body;
-    console.log("fest", data);
-    await dummy.insertOne(data)
+    const result = await dummy.insertOne(req.body);
+    return res.status(201).json({ ok: true, id: result.insertedId});
   } catch (err) {
     console.error("POST ERROR", err);
-    return res.status(500);
+    return res.status(500).json({error: "Internt fel"});
   }
 });
 
