@@ -1,16 +1,17 @@
 import express from "express";
 import type { Request, Response } from "express";
 import cors from 'cors';
+import path from "path";
+import dotenv from "dotenv"; dotenv.config();
 import { MongoClient } from "mongodb";
 import { fileURLToPath } from "url";
-import path from "path";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
 // Ansluter till mongodb
 
 // variabler till att definera om vi kör prod eller dev server.
-const kompositkungen = "kompositkungen";
-const isProduction = process.env.NODE_ENV === "production";
+
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,14 +22,17 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors());
 
-let isTesting = process.env.NODE_ENV === "test";
+const kompositkungen = "kompositkungen";
+const isProduction = process.env.NODE_ENV === "production";
+const isTesting = process.env.NODE_ENV === "test";
+
 let uri;
 if(isTesting) {
   const mongod = await MongoMemoryServer.create({ instance: { dbName: "test" }});
   uri = mongod.getUri();
   console.log("MONGO MEM RUNNING AT ", uri);
 } else {
-  uri = "mongodb://127.0.0.1:27017";
+  uri = process.env.MONGODB_URI as string;
 }
 
 const client = new MongoClient(uri);
