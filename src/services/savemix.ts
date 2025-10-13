@@ -12,7 +12,7 @@ export async function saveData() {
   console.log(project);
   console.log("då");
 
-  const result = await fetch("http://localhost:3000/api/form", {
+  const result = await fetch("/api/form", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
