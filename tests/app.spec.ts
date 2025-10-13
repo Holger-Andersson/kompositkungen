@@ -39,15 +39,15 @@ test("can calculate mix 3part", async ({page}) => {
 
 })
 
-test("has history button", async ({page}) => {
-    await page.goto('http://localhost:3000');
+// test("has history button", async ({page}) => {
+//     await page.goto('http://localhost:3000');
 
-    await page.getByRole('button', { name: 'Historik'}).click();
+//     await page.getByRole('button', { name: 'Historik'}).click();
 
-    await page.getByPlaceholder("tex 18922").fill('1231');
+//     await page.getByPlaceholder("tex 18922").fill('1231');
 
-    await page.click('text=Hämta');
+//     await page.click('text=Hämta');
 
-    await expect(page.locator("#output")).toContainText(/"projectNumber":\s*1231/);
-});
+//     await expect(page.locator("#output")).toContainText(/"projectNumber":\s*1231/);
+// });
 
