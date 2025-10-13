@@ -4,15 +4,12 @@ import cors from 'cors';
 import { MongoClient } from "mongodb";
 import { fileURLToPath } from "url";
 import path from "path";
+import { MongoMemoryServer } from "mongodb-memory-server";
 
 // Ansluter till mongodb
-const uri = "mongodb://127.0.0.1:27017"
-const client = new MongoClient(uri);
-await client.connect();
-const db = client.db("test");
-const dummy = db.collection("dummy");
 
 // variabler till att definera om vi kör prod eller dev server.
+const kompositkungen = "kompositkungen";
 const isProduction = process.env.NODE_ENV === "production";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -20,28 +17,45 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 3000;
+
 app.use(express.json());
 app.use(cors());
+
+let isTesting = process.env.NODE_ENV === "test";
+let uri;
+if(isTesting) {
+  const mongod = await MongoMemoryServer.create({ instance: { dbName: "test" }});
+  uri = mongod.getUri();
+  console.log("MONGO MEM RUNNING AT ", uri);
+} else {
+  uri = "mongodb://127.0.0.1:27017";
+}
+
+const client = new MongoClient(uri);
+await client.connect();
+const db = client.db(kompositkungen);
+const projects = db.collection("test");
+
 
 // Tar emot data och skickar den till databas.
 app.post('/api/form', async (req: Request, res: Response) => {
   try {
-    const result = await dummy.insertOne(req.body);
-    return res.status(201).json({ ok: true, id: result.insertedId});
+    const result = await projects.insertOne(req.body);
+    return res.status(201).json({ id: result.insertedId });
   } catch (err) {
     console.error("POST ERROR", err);
-    return res.status(500).json({error: "Internt fel"});
+    return res.status(500).json({ error: "Internt fel" });
   }
 });
 
 // Hämtar data från databas vid förfrågan till historik. 
-app.get('/api/dummy/:projectNumber', async (req: Request, res: Response) => {
+app.get('/api/projects/:projectNumber', async (req: Request, res: Response) => {
   try {
     const num = Number(req.params.projectNumber);
     if (!Number.isFinite(num)) {
       return res.status(400).json({ error: "Ogiltigt projektnummer" })
     }
-    const doc = await dummy.findOne({ projectNumber: num }, { sort: { _id: -1 } });
+    const doc = await projects.findOne({ projectNumber: num }, { sort: { _id: -1 } });
 
     if (!doc) return res.status(404).json({ error: "Projekt saknas" });
     return res.json(doc);
