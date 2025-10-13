@@ -40,7 +40,6 @@ await client.connect();
 const db = client.db(kompositkungen);
 const projects = db.collection("test");
 
-
 // Tar emot data och skickar den till databas.
 app.post('/api/form', async (req: Request, res: Response) => {
   try {
