@@ -28,9 +28,9 @@ jobs:
       # with:
       #   node-version: ${{ matrix.node-version }}
       #   cache: 'npm'
-    - run: npm ci
-    - run: npx playwright install --with-deps
-    - run: npm run test:mem
+      run: npm ci
+      run: npx playwright install --with-deps
+      run: npm run test:mem
     # - run: npx playwright install --with-deps
     # - run: npx playwright test
 
