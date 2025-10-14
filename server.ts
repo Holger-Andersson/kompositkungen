@@ -53,16 +53,19 @@ app.post('/api/form', async (req: Request, res: Response) => {
 });
 
 // Hämtar data från databas vid förfrågan till historik. 
-app.get('/api/projects/:projectNumber', async (req: Request, res: Response) => {
+app.get('/api/projects/:projectNumber/history', async (req: Request, res: Response) => {
   try {
     const num = Number(req.params.projectNumber);
     if (!Number.isFinite(num)) {
       return res.status(400).json({ error: "Ogiltigt projektnummer" })
     }
-    const doc = await projects.findOne({ projectNumber: num }, { sort: { _id: -1 } });
+     const items = await projects
+    .find({ projectNumber: num })
+    .sort({ createdAt: -1 })
+    .limit(50)
+    .toArray();
 
-    if (!doc) return res.status(404).json({ error: "Projekt saknas" });
-    return res.json(doc);
+  return res.json(items);
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: "Internt fel" });

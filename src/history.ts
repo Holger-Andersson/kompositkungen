@@ -36,7 +36,7 @@ export async function renderHistory() {
     list.innerHTML = "";
     for (const item of items) {
       list.innerHTML += `
-    <div class="row" style="border-bottom:1px solid #eee;padding:8px 0">
+    <div class="row" id="listDisplay">
     <div><strong>Projekt:</strong> ${item.projectNumber ?? '-'}</div>
     <div><strong>Datum:</strong> ${item.createdAt ? new Date(item.createdAt).toLocaleString() : ''}</div>
     <div><strong>Material:</strong> ${item.material ?? ''}</div>

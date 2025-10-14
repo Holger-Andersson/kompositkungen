@@ -52,6 +52,10 @@ h2 { font-size: 1.1rem; margin-bottom: 10px; }
   margin-bottom: 12px;
 }
 
+#listDisplay {
+    border-bottom:1px solid
+}
+
 label {
   display: flex;
   flex-direction: column;
