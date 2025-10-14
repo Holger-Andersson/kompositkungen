@@ -1,4 +1,4 @@
-import "./style.css"; 
+import "./style.css";
 import { Mats } from './domain/materials.ts';
 import { renderHistory } from './history.ts'
 import { getInputCalc } from './services/calcmix.ts'
@@ -92,8 +92,7 @@ export function renderHome() {
   submitButton.addEventListener('click', async (event) => {
     event.preventDefault();
     saveData();
-    console.log("hej")
+    renderHome();
   });
 }
-  renderHome();
-  console.log("allo")
+renderHome();

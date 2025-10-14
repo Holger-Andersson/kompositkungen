@@ -27,8 +27,8 @@ const isProduction = process.env.NODE_ENV === "production";
 const isTesting = process.env.NODE_ENV === "test";
 
 let uri;
-if(isTesting) {
-  const mongod = await MongoMemoryServer.create({ instance: { dbName: "test" }});
+if (isTesting) {
+  const mongod = await MongoMemoryServer.create({ instance: { dbName: "test" } });
   uri = mongod.getUri();
   console.log("MONGO MEM RUNNING AT ", uri);
 } else {
@@ -43,7 +43,8 @@ const projects = db.collection("test");
 // Tar emot data och skickar den till databas.
 app.post('/api/form', async (req: Request, res: Response) => {
   try {
-    const result = await projects.insertOne(req.body);
+    const doc = { ...req.body, createdAt: new Date() };
+    const result = await projects.insertOne(doc);
     return res.status(201).json({ id: result.insertedId });
   } catch (err) {
     console.error("POST ERROR", err);
@@ -69,6 +70,23 @@ app.get('/api/projects/:projectNumber', async (req: Request, res: Response) => {
 
 });
 
+app.get('/api/history', async (_req: Request, res: Response) => {
+  try {
+    const items = await projects
+      .find({})
+      .limit(25)
+      .project({ _id: 0, projectNumber: 1, material: 1, partA: 1, partB: 1, partC: 1, temperature: 1, comment: 1, createdAt: 1 })
+      .sort({ createdAt: -1 })
+      .toArray();
+
+    res.json(items);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Kunde inte hämta historik" });
+  }
+
+});
+
 // Logik för att köra vite och express på samma port
 // Mer logik för att avgöra om det ska köras som prod eller dev server.
 if (!isProduction) {
@@ -76,8 +94,9 @@ if (!isProduction) {
   const vite = await createViteServer({
     server: { middlewareMode: true },
     appType: "spa",
+    
   });
-
+  console.log("IM AM LOCALHOST")
   app.use(vite.middlewares)
 
 } else {
