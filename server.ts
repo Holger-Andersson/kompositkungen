@@ -3,7 +3,7 @@ import type { Request, Response } from "express";
 import cors from 'cors';
 import path from "path";
 import dotenv from "dotenv"; dotenv.config();
-import { MongoClient } from "mongodb";
+import { MongoClient, ObjectId } from "mongodb";
 import { fileURLToPath } from "url";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
@@ -48,7 +48,7 @@ app.post('/api/form', async (req: Request, res: Response) => {
     return res.status(201).json({ id: result.insertedId });
   } catch (err) {
     console.error("POST ERROR", err);
-    return res.status(500).json({ error: "Internt fel" });
+    return res.status(500).json({ error: "Formuläret blev inte sparat" });
   }
 });
 
@@ -59,18 +59,17 @@ app.get('/api/projects/:projectNumber/history', async (req: Request, res: Respon
     if (!Number.isFinite(num)) {
       return res.status(400).json({ error: "Ogiltigt projektnummer" })
     }
-     const items = await projects
-    .find({ projectNumber: num })
-    .sort({ createdAt: -1 })
-    .limit(50)
-    .toArray();
+    const items = await projects
+      .find({ projectNumber: num })
+      .sort({ createdAt: -1 })
+      .limit(50)
+      .toArray();
 
-  return res.json(items);
+    return res.json(items);
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: "Internt fel" });
+    return res.status(500).json({ error: "Kunde inte hämta historydata" });
   }
-
 });
 
 app.get('/api/history', async (_req: Request, res: Response) => {
@@ -78,7 +77,6 @@ app.get('/api/history', async (_req: Request, res: Response) => {
     const items = await projects
       .find({})
       .limit(25)
-      .project({ _id: 0, projectNumber: 1, material: 1, partA: 1, partB: 1, partC: 1, temperature: 1, comment: 1, createdAt: 1 })
       .sort({ createdAt: -1 })
       .toArray();
 
@@ -87,8 +85,22 @@ app.get('/api/history', async (_req: Request, res: Response) => {
     console.error(err);
     return res.status(500).json({ error: "Kunde inte hämta historik" });
   }
-
 });
+
+app.delete('/api/history/:id', async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const result = await projects.deleteOne({ _id: new ObjectId(id) });
+    if (result.deletedCount === 1) {
+      return res.json({ message: "Raderad" });
+    }
+
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: "Kunde inte radera posten" });
+  }
+});
+
 
 // Logik för att köra vite och express på samma port
 // Mer logik för att avgöra om det ska köras som prod eller dev server.
@@ -97,9 +109,8 @@ if (!isProduction) {
   const vite = await createViteServer({
     server: { middlewareMode: true },
     appType: "spa",
-    
+
   });
-  console.log("IM AM LOCALHOST")
   app.use(vite.middlewares)
 
 } else {

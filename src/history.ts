@@ -17,13 +17,18 @@ export async function renderHistory() {
 </div>
 
 <section class="history-section">
-<div id="historyList"></div>
-
+  <div id="historyList"></div>
 </section>
 
 </div>
-
 `;
+  // knapp för att renderera tillbaka till index sidan.
+  const switchButton = document.getElementById("switchBack") as HTMLButtonElement;
+  if (switchButton) {
+    switchButton.addEventListener('click', () => renderHome());
+
+  }
+
   try {
     const res = await fetch("/api/history");
     const items = await res.json();
@@ -45,6 +50,7 @@ export async function renderHistory() {
     <div><strong>Part C:</strong> ${item.partC ?? ''}</div>
     <div><strong>Temp:</strong> ${item.temperature ?? ''}</div>
     <div><strong>Kommentar:</strong> ${item.comment ?? ''}</div>
+    <button type="button" data-id="${item._id}" class="delete-btn">Radera</button>
     </div>
     `
     }
@@ -53,15 +59,19 @@ export async function renderHistory() {
     document.getElementById("historyList")!.innerHTML = "<p>Kunde inte hämta historik.</p>";
   }
 
-  // knapp för att renderera tillbaka till index sidan.
-  const switchButton = document.getElementById("switchBack") as HTMLButtonElement;
-  if (switchButton) {
-    switchButton.addEventListener('click', () => renderHome());
-
-  }
   const historyButton = document.getElementById("getProjectHistory") as HTMLButtonElement;
   historyButton.addEventListener('click', async (event) => {
     event.preventDefault();
     getData();
+  });
+
+  document.getElementById("historyList")!.addEventListener("click", async (event) => {
+    const deleteButton = (event.target as HTMLElement).closest<HTMLButtonElement>(".delete-btn");
+    const id = deleteButton.dataset.id;
+
+    const res = await fetch(`/api/history/${id}`, { method: 'DELETE' });
+    if (res.ok) {
+      renderHistory();
+    };
   });
 }
