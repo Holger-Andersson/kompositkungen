@@ -7,10 +7,6 @@ import { MongoClient, ObjectId } from "mongodb";
 import { fileURLToPath } from "url";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
-
-
-
-
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
