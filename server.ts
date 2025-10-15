@@ -2,14 +2,14 @@ import express from "express";
 import type { Request, Response } from "express";
 import cors from 'cors';
 import path from "path";
-import dotenv from "dotenv"; dotenv.config();
+import dotenv from "dotenv";
 import { MongoClient, ObjectId } from "mongodb";
 import { fileURLToPath } from "url";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
-// Ansluter till mongodb
 
-// variabler till att definera om vi kör prod eller dev server.
+
+
 
 dotenv.config();
 
@@ -22,7 +22,7 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors());
 
-const kompositkungen = "kompositkungen";
+
 const isProduction = process.env.NODE_ENV === "production";
 const isTesting = process.env.NODE_ENV === "test";
 
@@ -34,7 +34,8 @@ if (isTesting) {
 } else {
   uri = process.env.MONGODB_URI as string;
 }
-
+// Ansluter till mongodb
+const kompositkungen = "kompositkungen";
 const client = new MongoClient(uri);
 await client.connect();
 const db = client.db(kompositkungen);
@@ -72,6 +73,17 @@ app.get('/api/projects/:projectNumber/history', async (req: Request, res: Respon
   }
 });
 
+app.get('/api/history/:id', async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const item = await projects.findOne({ _id: new ObjectId(id) });
+    res.json(item);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Kunde inte hämta posten" });
+  }
+});
+
 app.get('/api/history', async (_req: Request, res: Response) => {
   try {
     const items = await projects
@@ -87,6 +99,19 @@ app.get('/api/history', async (_req: Request, res: Response) => {
   }
 });
 
+// Uppdaterar data i mongoDB
+app.put('/api/history/:id', async (req: Request, res: Response) => {
+const id = req.params.id;
+const updateProject = {... req.body };
+const result = await projects.updateOne(
+  { _id: new ObjectId(id) },
+  { $set: updateProject }
+);
+if (!result.matchedCount) return res.status(404).json({ error: "Hittade inte posten" });
+res.json({ message: "Post uppdaterad", modifiedCount: result.modifiedCount });
+})
+
+// Raderar data i mongoDB
 app.delete('/api/history/:id', async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
@@ -94,7 +119,6 @@ app.delete('/api/history/:id', async (req: Request, res: Response) => {
     if (result.deletedCount === 1) {
       return res.json({ message: "Raderad" });
     }
-
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: "Kunde inte radera posten" });
@@ -103,13 +127,11 @@ app.delete('/api/history/:id', async (req: Request, res: Response) => {
 
 
 // Logik för att köra vite och express på samma port
-// Mer logik för att avgöra om det ska köras som prod eller dev server.
 if (!isProduction) {
   const { createServer: createViteServer } = await import("vite")
   const vite = await createViteServer({
     server: { middlewareMode: true },
     appType: "spa",
-
   });
   app.use(vite.middlewares)
 

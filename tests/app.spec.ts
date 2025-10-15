@@ -29,7 +29,7 @@ test("can calculate mix 3part", async ({page}) => {
 
     await page.getByRole("combobox", {name: 'Material' }).selectOption('MX1')
 
-    await page.getByPlaceholder("Project nummer").fill('888');
+    await page.getByPlaceholder("Project nummer").fill('1231');
 
     await page.getByRole("spinbutton", {name: 'B-del'}).fill('100');
 

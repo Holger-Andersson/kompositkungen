@@ -6,27 +6,22 @@ export async function renderHistory() {
 <div class="container">
     <h1>KOMPOSITKUNGEN</h1>
         <button id="switchBack" type="button">Tillbaka</button>
-        <form id="displayProject" class="section" action="#" method="#">
-    
-        <div class="row">
-
-        <label for="projectHistory">Ange projektnummer</label>
-
-        <input type="number" id="projectHistory" placeholder="tex 18922"/>
+          <form id="displayProject" class="section">
+          <div class="row">
+          <label for="projectHistory">Ange projektnummer</label>
+          <input type="number" id="projectHistory" placeholder="tex 18922"/>
         <button type="submit" id="getProjectHistory">Hämta</button>
 </div>
-
 <section class="history-section">
   <div id="historyList"></div>
 </section>
-
-</div>
+  </div>
 `;
+
   // knapp för att renderera tillbaka till index sidan.
   const switchButton = document.getElementById("switchBack") as HTMLButtonElement;
   if (switchButton) {
     switchButton.addEventListener('click', () => renderHome());
-
   }
 
   try {
@@ -51,6 +46,7 @@ export async function renderHistory() {
     <div><strong>Temp:</strong> ${item.temperature ?? ''}</div>
     <div><strong>Kommentar:</strong> ${item.comment ?? ''}</div>
     <button type="button" data-id="${item._id}" class="delete-btn">Radera</button>
+    <button type="button" data-id="${item._id}" class="edit-btn">Ändra</button>
     </div>
     `
     }
@@ -65,13 +61,35 @@ export async function renderHistory() {
     getData();
   });
 
-  document.getElementById("historyList")!.addEventListener("click", async (event) => {
-    const deleteButton = (event.target as HTMLElement).closest<HTMLButtonElement>(".delete-btn");
-    const id = deleteButton.dataset.id;
+  const editButtons = document.querySelectorAll<HTMLButtonElement>(".edit-btn");
+  editButtons.forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const id = btn.dataset.id;
+      if (!id) return;
+      const res = await fetch(`/api/history/${id}`);
+      if (!res.ok) {
+        console.error("Kunde inte hämta posten");
+        return;
+      }
+      const data = await res.json();
+      renderHome(data);
+    });
+  })
 
-    const res = await fetch(`/api/history/${id}`, { method: 'DELETE' });
-    if (res.ok) {
+  const deleteButtons = document.querySelectorAll<HTMLButtonElement>(".delete-btn");
+  deleteButtons.forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const id = btn.dataset.id;
+      if (!id) return;
+      const res = await fetch(`/api/history/${id}`, {
+        method: "DELETE"
+      });
+
+      if (!res.ok) {
+        console.error("Kunde inte radera posten");
+        return;
+      }
       renderHistory();
-    };
+    });
   });
 }

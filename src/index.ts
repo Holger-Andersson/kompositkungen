@@ -5,7 +5,7 @@ import { getInputCalc } from './services/calcmix.ts'
 import { saveData } from './services/savemix.ts'
 // import { getPotlifeMinutes } from './services/getpotlife.ts'
 
-export function renderHome() {
+export function renderHome(prefill?: any) {
   document.querySelector('#app')!.innerHTML = `
     <div class="container">
       <h1>KOMPOSITKUNGEN</h1>
@@ -14,6 +14,7 @@ export function renderHome() {
       <form id="mix-form" class="section" action="#" method="#">
         <div class="row">
 
+          <input type="hidden" id="docId" />
           <label for="material">Material</label>
           <select id="material" name="material" required>
           </select>
@@ -56,7 +57,6 @@ export function renderHome() {
           <div>Använd tid: 20:00</div>
         </div>
 
-
         <div class="progress">
           <div class="bar" id="timer-bar" style="width: 33%"></div>
         </div>
@@ -83,16 +83,56 @@ export function renderHome() {
   Mats.forEach(mat => {
     const option = document.createElement("option");
     option.textContent = mat.name;
+    option.value = mat.name;
     selectElement.appendChild(option);
   });
   getInputCalc();
 
-  // funktion som tar befintlig input och sparar det till databas.
-  const submitButton = document.getElementById("calculate") as HTMLButtonElement;
-  submitButton.addEventListener('click', async (event) => {
+  if (prefill) {
+    (document.getElementById("docId") as HTMLInputElement).value = prefill._id ?? "";
+    (document.getElementById("project") as HTMLInputElement).value = prefill.projectNumber ?? "";
+    (document.getElementById("material") as HTMLSelectElement).value = prefill.material ?? "";
+    (document.getElementById("amountA") as HTMLInputElement).value = prefill.partA ?? "";
+    (document.getElementById("amountB") as HTMLInputElement).value = prefill.partB ?? "";
+    (document.getElementById("amountC") as HTMLInputElement).value = prefill.partC ?? "";
+    (document.getElementById("temperature") as HTMLInputElement).value = prefill.temperature ?? "";
+    (document.getElementById("comment") as HTMLInputElement).value = prefill.comment ?? "";
+    (document.getElementById("calculate") as HTMLButtonElement).textContent = "Uppdatera";
+  }
+
+  const updateForm = document.getElementById("mix-form") as HTMLFormElement;
+  updateForm.addEventListener('submit', async (event) => {
     event.preventDefault();
-    saveData();
-    renderHome();
+
+    const body = {
+      projectNumber: Number((document.getElementById("project") as HTMLInputElement).value),
+      material: (document.getElementById("material") as HTMLSelectElement).value,
+      partA: (document.getElementById("amountA") as HTMLInputElement).value,
+      partB: (document.getElementById("amountB") as HTMLInputElement).value,
+      partC: (document.getElementById("amountC") as HTMLInputElement).value,
+      temperature: (document.getElementById("temperature") as HTMLInputElement).value,
+      comment: (document.getElementById("comment") as HTMLInputElement).value,
+    };
+    const id = (document.getElementById("docId") as HTMLInputElement).value;
+
+    try {
+      if (id) {
+        const res = await fetch(`/api/history/${encodeURIComponent(id)}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        if (res.ok) {
+          renderHistory();
+        }
+      } else {
+        saveData();
+        renderHome();
+      }
+    } catch (error) {
+      console.error(error, "Kunde inte uppdatera");
+    }
   });
+
 }
 renderHome();
