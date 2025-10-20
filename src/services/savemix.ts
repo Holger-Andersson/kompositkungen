@@ -9,8 +9,6 @@ export async function saveData() {
     partB: (document.getElementById("amountB") as HTMLInputElement).value,
     partC: (document.getElementById("amountC") as HTMLInputElement).value,
   }
-  console.log(project);
-  console.log("då");
 
   const result = await fetch("/api/form", {
     method: "POST",

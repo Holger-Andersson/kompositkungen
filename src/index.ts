@@ -1,7 +1,7 @@
 import "./style.css";
-import { Mats } from './domain/materials.ts';
-import { renderHistory } from './history.ts'
-import { getInputCalc } from './services/calcmix.ts'
+import { materials } from './data/materials.data.ts';
+import { renderHistory } from './pages/history.ts'
+import { MixRatioInputs } from './services/calculate-mix.ts'
 import { saveData } from './services/savemix.ts'
 // import { getPotlifeMinutes } from './services/getpotlife.ts'
 
@@ -80,13 +80,13 @@ export function renderHome(prefill?: any) {
   const selectElement = document.getElementById("material") as HTMLSelectElement;
   selectElement.innerHTML = "";
 
-  Mats.forEach(mat => {
+  materials.forEach(mat => {
     const option = document.createElement("option");
     option.textContent = mat.name;
     option.value = mat.name;
     selectElement.appendChild(option);
   });
-  getInputCalc();
+  MixRatioInputs();
 
   if (prefill) {
     (document.getElementById("docId") as HTMLInputElement).value = prefill._id ?? "";

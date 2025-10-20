@@ -1,5 +1,5 @@
-import { renderHome } from './index.ts';
-import { getData } from '../src/services/gethistory.ts';
+import { renderHome } from '../index.ts';
+import { getData } from '../services/gethistory.ts';
 
 export async function renderHistory() {
   document.querySelector('#app')!.innerHTML = `
