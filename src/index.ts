@@ -3,7 +3,6 @@ import { materials } from './data/materials.data.ts';
 import { renderHistory } from './pages/history.ts'
 import { MixRatioInputs } from './services/calculate-mix.ts'
 import { saveData } from './services/savemix.ts'
-// import { getPotlifeMinutes } from './services/getpotlife.ts'
 
 export function renderHome(prefill?: any) {
   document.querySelector('#app')!.innerHTML = `
@@ -87,7 +86,7 @@ export function renderHome(prefill?: any) {
     selectElement.appendChild(option);
   });
   MixRatioInputs();
-
+  
   if (prefill) {
     (document.getElementById("docId") as HTMLInputElement).value = prefill._id ?? "";
     (document.getElementById("project") as HTMLInputElement).value = prefill.projectNumber ?? "";
@@ -99,7 +98,6 @@ export function renderHome(prefill?: any) {
     (document.getElementById("comment") as HTMLInputElement).value = prefill.comment ?? "";
     (document.getElementById("calculate") as HTMLButtonElement).textContent = "Uppdatera";
   }
-
   const updateForm = document.getElementById("mix-form") as HTMLFormElement;
   updateForm.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -133,6 +131,5 @@ export function renderHome(prefill?: any) {
       console.error(error, "Kunde inte uppdatera");
     }
   });
-
 }
 renderHome();

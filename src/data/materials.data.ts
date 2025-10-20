@@ -1,17 +1,4 @@
-export interface MaterialData {
-    name: string;
-    ratio: {
-        a: number;
-        b: number;
-        c?: number;
-    };
-    potlife: {
-        10: number;
-        16: number;
-        25: number;
-        32: number;
-    }
-}
+import { type MaterialData } from '../data/materials.interface.ts';
 
 export const materials: MaterialData[] = [
     { name: "Välj Material..", ratio: { a: 0, b: 0 }, potlife: { 10: 90, 16: 60, 25: 35, 32: 17 } },
