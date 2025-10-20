@@ -128,7 +128,6 @@ if (!isProduction) {
     appType: "spa",
   });
   app.use(vite.middlewares)
-
 } else {
   const clientPath = path.resolve(__dirname, "../client")
   app.use(express.static(clientPath))
