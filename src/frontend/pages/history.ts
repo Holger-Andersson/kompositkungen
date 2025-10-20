@@ -1,4 +1,4 @@
-import { renderHome } from '../index.ts';
+import { renderHome } from '../../index.ts';
 import { getData } from '../services/gethistory.ts';
 
 export async function renderHistory() {

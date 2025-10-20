@@ -12,3 +12,13 @@ export interface MaterialData {
         32: number;
     }
 }
+
+export type MixFormData = {
+    projectNumber: number;
+    material: string;
+    partA: number;
+    partB: number;
+    partC?: number;
+    temperature: number;
+    comment: string;
+};

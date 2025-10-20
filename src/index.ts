@@ -1,8 +1,8 @@
 import "./style.css";
-import { materials } from './data/materials.data.ts';
-import { renderHistory } from './pages/history.ts'
-import { MixRatioInputs } from './services/calculate-mix.ts'
-import { saveData } from './services/savemix.ts'
+import { materials } from './frontend/data/materials.data.ts';
+import { renderHistory } from './frontend/pages/history.ts'
+import { MixRatioInputs } from './frontend/services/calculate-mix.ts'
+import { saveData } from './frontend/services/savemix.ts'
 
 export function renderHome(prefill?: any) {
   document.querySelector('#app')!.innerHTML = `
@@ -86,7 +86,7 @@ export function renderHome(prefill?: any) {
     selectElement.appendChild(option);
   });
   MixRatioInputs();
-  
+
   if (prefill) {
     (document.getElementById("docId") as HTMLInputElement).value = prefill._id ?? "";
     (document.getElementById("project") as HTMLInputElement).value = prefill.projectNumber ?? "";
@@ -105,10 +105,10 @@ export function renderHome(prefill?: any) {
     const body = {
       projectNumber: Number((document.getElementById("project") as HTMLInputElement).value),
       material: (document.getElementById("material") as HTMLSelectElement).value,
-      partA: (document.getElementById("amountA") as HTMLInputElement).value,
-      partB: (document.getElementById("amountB") as HTMLInputElement).value,
-      partC: (document.getElementById("amountC") as HTMLInputElement).value,
-      temperature: (document.getElementById("temperature") as HTMLInputElement).value,
+      partA: Number((document.getElementById("amountA") as HTMLInputElement).value),
+      partB: Number((document.getElementById("amountB") as HTMLInputElement).value),
+      partC: Number((document.getElementById("amountC") as HTMLInputElement).value),
+      temperature: Number((document.getElementById("temperature") as HTMLInputElement).value),
       comment: (document.getElementById("comment") as HTMLInputElement).value,
     };
     const id = (document.getElementById("docId") as HTMLInputElement).value;
@@ -120,12 +120,18 @@ export function renderHome(prefill?: any) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
         });
-        if (res.ok) {
-          renderHistory();
+        if (!res.ok) {
+          const data = await res.json();
+          alert(`${data.error}`);
+          return;
         }
+        renderHistory();
+        return;
       } else {
-        saveData();
-        renderHome();
+        const isSaved = await saveData();
+        if (isSaved) {
+          renderHome();
+        }
       }
     } catch (error) {
       console.error(error, "Kunde inte uppdatera");

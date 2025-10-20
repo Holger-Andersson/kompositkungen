@@ -10,7 +10,7 @@ export function MixRatioInputs() {
 
   if (!a || !b || !c || !selectMat) return;
 
-  function calcWithA() {
+ function calcWithA() {
     const mat = getSelectedMaterial();
     const ratioA = mat?.ratio?.a;
     const ratioB = mat?.ratio?.b;

@@ -3,8 +3,9 @@ import type { Request, Response } from "express";
 import path from "node:path";
 import dotenv from "dotenv";
 import { MongoClient, ObjectId } from "mongodb";
-import { fileURLToPath } from "url";
+import { fileURLToPath } from "node:url";
 import { MongoMemoryServer } from "mongodb-memory-server";
+import { validateMixFormData } from "./src/backend/validate.ts";
 
 dotenv.config();
 
@@ -15,7 +16,6 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
-
 
 const isProduction = process.env.NODE_ENV === "production";
 const isTesting = process.env.NODE_ENV === "test";
@@ -37,6 +37,12 @@ const projects = db.collection("test");
 
 // Tar emot data och skickar den till databas.
 app.post('/api/form', async (req: Request, res: Response) => {
+  //validera data
+  const validation = validateMixFormData(req.body);
+  if (!validation) {
+    return res.status(400).json({ error: "Ogiltig data i formuläret" });
+  }
+
   try {
     const doc = { ...req.body, createdAt: new Date() };
     const result = await projects.insertOne(doc);
@@ -95,14 +101,20 @@ app.get('/api/history', async (_req: Request, res: Response) => {
 
 // Uppdaterar data i mongoDB
 app.put('/api/history/:id', async (req: Request, res: Response) => {
-const id = req.params.id;
-const updateProject = {... req.body };
-const result = await projects.updateOne(
-  { _id: new ObjectId(id) },
-  { $set: updateProject }
-);
-if (!result.matchedCount) return res.status(404).json({ error: "Hittade inte posten" });
-res.json({ message: "Post uppdaterad", modifiedCount: result.modifiedCount });
+  //validera data
+  const validation = validateMixFormData(req.body);
+  if (!validation) {
+    return res.status(400).json({ error: "Ogiltig data i formuläret" });
+  }
+
+  const id = req.params.id;
+  const updateProject = { ...req.body };
+  const result = await projects.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: updateProject }
+  );
+  if (!result.matchedCount) return res.status(404).json({ error: "Hittade inte posten" });
+  res.json({ message: "Post uppdaterad", modifiedCount: result.modifiedCount });
 })
 
 // Raderar data i mongoDB
@@ -118,7 +130,6 @@ app.delete('/api/history/:id', async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Kunde inte radera posten" });
   }
 });
-
 
 // Logik för att köra vite och express på samma port
 if (!isProduction) {

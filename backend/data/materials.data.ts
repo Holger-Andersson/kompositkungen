@@ -1,4 +1,4 @@
-import { type MaterialData } from '../data/materials.interface.ts';
+import { type MaterialData } from './materials.interface.ts';
 
 export const materials: MaterialData[] = [
     { name: "Välj Material..", ratio: { a: 0, b: 0 }, potlife: { 10: 90, 16: 60, 25: 35, 32: 17 } },

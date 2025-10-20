@@ -2,8 +2,26 @@ import express from "express";
 import path from "node:path";
 import dotenv from "dotenv";
 import { MongoClient, ObjectId } from "mongodb";
-import { fileURLToPath } from "url";
+import { fileURLToPath } from "node:url";
 import { MongoMemoryServer } from "mongodb-memory-server";
+function validateMixFormData(formData) {
+  const projectNumber = formData.projectNumber;
+  const material = formData.material;
+  const partA = formData.partA;
+  const partB = formData.partB;
+  const temperature = formData.temperature;
+  const comment = formData.comment;
+  if (typeof projectNumber === "number" || typeof partA === "number" || typeof partB === "number" || typeof temperature === "number") {
+    if (projectNumber > 0 && partA > 0 && partB > 0 && temperature > 0 && temperature <= 50) {
+      if (typeof material === "string" || typeof comment === "string") {
+        if (material.length > 0) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,6 +44,10 @@ await client.connect();
 const db = client.db(kompositkungen);
 const projects = db.collection("test");
 app.post("/api/form", async (req, res) => {
+  const validation = validateMixFormData(req.body);
+  if (!validation) {
+    return res.status(400).json({ error: "Ogiltig data i formuläret" });
+  }
   try {
     const doc = { ...req.body, createdAt: /* @__PURE__ */ new Date() };
     const result = await projects.insertOne(doc);
@@ -68,6 +90,10 @@ app.get("/api/history", async (_req, res) => {
   }
 });
 app.put("/api/history/:id", async (req, res) => {
+  const validation = validateMixFormData(req.body);
+  if (!validation) {
+    return res.status(400).json({ error: "Ogiltig data i formuläret" });
+  }
   const id = req.params.id;
   const updateProject = { ...req.body };
   const result = await projects.updateOne(
