@@ -28,6 +28,7 @@ if (isTesting) {
 } else {
   uri = process.env.MONGODB_URI as string;
 }
+
 // Ansluter till mongodb
 const kompositkungen = "kompositkungen";
 const client = new MongoClient(uri);
@@ -37,7 +38,7 @@ const projects = db.collection("test");
 
 // Tar emot data och skickar den till databas.
 app.post('/api/form', async (req: Request, res: Response) => {
-  //validera data
+  // Validerar data
   const validation = validateMixFormData(req.body);
   if (!validation) {
     return res.status(400).json({ error: "Ogiltig data i formuläret" });
@@ -101,7 +102,7 @@ app.get('/api/history', async (_req: Request, res: Response) => {
 
 // Uppdaterar data i mongoDB
 app.put('/api/history/:id', async (req: Request, res: Response) => {
-  //validera data
+  // Validerar data
   const validation = validateMixFormData(req.body);
   if (!validation) {
     return res.status(400).json({ error: "Ogiltig data i formuläret" });
@@ -138,6 +139,7 @@ if (!isProduction) {
     server: { middlewareMode: true },
     appType: "spa",
   });
+  
   app.use(vite.middlewares)
 } else {
   const clientPath = path.resolve(__dirname, "../client")

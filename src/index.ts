@@ -23,13 +23,13 @@ export function renderHome(prefill?: any) {
         </div>
         <div class="row">
           <label for="amountA">A-del</label>
-          <input id="amountA" name="amountA" type="number" placeholder="A" />
+          <input id="amountA" name="amountA" type="number" placeholder="Ange i gram..." />
 
           <label for="amountB">B-del</label>
-          <input id="amountB" name="amountB" type="number" placeholder="B" />
+          <input id="amountB" name="amountB" type="number" placeholder="Ange i gram..." />
 
           <label for="amountC">C-del</label>
-          <input id="amountC" name="amountC" type="number" placeholder="C" />
+          <input id="amountC" name="amountC" type="number" placeholder="Ange i gram..." />
           </div>
         <div class="row">
           <label for="temperature">Temperatur</label>
