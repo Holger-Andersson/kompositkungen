@@ -16,7 +16,7 @@ test("can calculate mix", async ({page}) => {
 
     await page.getByRole("spinbutton", {name: 'A-del'}).fill('100');
 
-    await expect(page.getByPlaceholder("B")).toHaveValue('25');
+    await expect(page.getByPlaceholder("B - Ange i gram...")).toHaveValue('25');
 
     await expect(page.getByRole('spinbutton', { name: 'C-del' })).toHaveValue('');
 
